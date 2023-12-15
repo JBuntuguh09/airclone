@@ -1,0 +1,55 @@
+import prismas from '@/app/libs/prismadb'
+
+interface IParams {
+    listings?: string;
+    userId?: string;
+    authorId?:string;
+}
+export default async function getReservations(
+    params: IParams
+) {
+    const { listings, userId, authorId } = params
+    
+    const  query: any = {}
+
+    if(listings) {
+        query.listingId = listings
+    }
+
+    if(userId) {
+        query.userId = userId
+    }
+
+    if(authorId) {
+        query.listing = {userId: authorId}
+    }
+
+   try {
+    const reservations = await prismas.reservation.findMany({
+        where: query,
+        include: {
+            listing: true
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+
+    const safeReservations = reservations.map(
+        (reservation) => ({
+        ...reservation,
+        createdAt: reservation.createdAt.toISOString(),
+        startDate: reservation.startDate.toISOString(),
+        endDate: reservation.endDate.toISOString(),
+        listing: {
+            ...reservation.listing,
+            createdAt: reservation.listing.createdAt.toISOString()
+        }
+    }))
+        return safeReservations
+   } catch (error:any) {
+        throw new Error(error)
+   }
+    
+
+}
