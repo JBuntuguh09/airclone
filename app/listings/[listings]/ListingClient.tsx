@@ -80,7 +80,7 @@ const ListingClient:React.FC<ListingClientProps> = ({
             
             toast.error("Error. Something went wrong")
         }).finally(()=>{
-            console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmbbbbbbbbbbgg")
+            
             setLoading(false)
         })
       },

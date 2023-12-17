@@ -1,9 +1,6 @@
 
-
-import Image from 'next/image'
 import  Container  from './components/Container'
 import ClientOnly from './components/ClientOnly'
-import { useState } from 'react'
 import EmptyState from './components/EmptyState'
 import getListings, { iListingParams } from './actions/getListings'
 import ListingCard from './components/listings/ListingCard'
@@ -14,8 +11,7 @@ interface HomeProps {
   searchParams : iListingParams
 }
 
-const  Home= async({searchParams
-}: HomeProps)=> {
+const  Home= async({searchParams}: HomeProps)=> {
   const listings = await getListings(searchParams)
   const currentUser = await getCurrentUser()
 
